@@ -1,5 +1,6 @@
 #include <dashboard_pages.h>
 #include <Dashboard.h>
+#include <SensorControllers.h>
 
 const char UTILS_HTML_TEMPLATE[] PROGMEM = R"=====(
 <!doctype html>
@@ -89,10 +90,9 @@ const char UTILS_HTML_TEMPLATE[] PROGMEM = R"=====(
 </html>
 )=====";
 
-const int sensorCount=3;
 static const keyProcessorEntry pageProcessors[] = {
         {"TITLE", [](const String& var){return Dashboard::instance()->title();}},
-        {"SENSOR_COUNT", [](const String& var){return String(sensorCount);}}
+        {"SENSOR_COUNT", [](const String& var){return String(ControllerGroup::instance()->count());}}
 };
 
 String utilsPageTemplateProcessor(const String& var){

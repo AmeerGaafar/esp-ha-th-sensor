@@ -1,7 +1,6 @@
 #include <dashboard_pages.h>
 #include <logging.h>
 #include <Dashboard.h>
-
 #include <SensorControllers.h>
 
 const char SENSORS_HTML_TEMPLATE[] PROGMEM = R"=====(
