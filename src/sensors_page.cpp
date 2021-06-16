@@ -31,13 +31,17 @@ const char SENSORS_HTML_TEMPLATE[] PROGMEM = R"=====(
 
   <main>
     <div class="p-3 pb-md-4 mx-auto text-left">
-      <p class="fs-5 text-muted">Below is latest reported state and statistics for all registered sensor in this %TITLE% device <i>%HOSTNAME%</i></p>
+      <p class="fs-5 text-muted">Below is latest reported state and statistics for all registered sensor in this %TITLE% device.</p>
     </div>
 
     <div class="w-75 mx-auto table-responsive">
-      <h5 style="padding-top: 1em;" class="display-6 text-left mb-4">%SENSOR_1_NAME%</h5>
+      <h5 style="padding-top: 1em;" class="display-7 text-left mb-4">%SENSOR_1_NAME%</h5>
       <table class="table text-center">
         <tbody>
+        <tr>
+          <th scope="row" class="text-start">Id:</th>
+          <td style="text-align:right">%SENSOR_1_ID%</td>
+        </tr>
         <tr>
           <th scope="row" class="text-start">State:</th>
           <td style="text-align:right">%SENSOR_1_STATE%</td>
@@ -63,9 +67,13 @@ const char SENSORS_HTML_TEMPLATE[] PROGMEM = R"=====(
     </div>
 
     <div class="w-75 mx-auto table-responsive">
-      <h5 style="padding-top: 1em;" class="display-6 text-left mb-4">%SENSOR_2_NAME%</h5>
+      <h5 style="padding-top: 1em;" class="display-7 text-left mb-4">%SENSOR_2_NAME%</h5>
       <table class="table text-center">
         <tbody>
+        <tr>
+          <th scope="row" class="text-start">Id:</th>
+          <td style="text-align:right">%SENSOR_2_ID%</td>
+        </tr>
         <tr>
           <th scope="row" class="text-start">State:</th>
           <td style="text-align:right">%SENSOR_2_STATE%</td>
@@ -91,9 +99,13 @@ const char SENSORS_HTML_TEMPLATE[] PROGMEM = R"=====(
     </div>
 
     <div class="w-75 mx-auto table-responsive">
-      <h5 style="padding-top: 1em;" class="display-6 text-left mb-4">%SENSOR_3_NAME%</h5>
+      <h5 style="padding-top: 1em;" class="display-7 text-left mb-4">%SENSOR_3_NAME%</h5>
       <table class="table text-center">
         <tbody>
+        <tr>
+          <th scope="row" class="text-start">Id:</th>
+          <td style="text-align:right">%SENSOR_3_ID%</td>
+        </tr>
         <tr>
           <th scope="row" class="text-start">State:</th>
           <td style="text-align:right">%SENSOR_3_STATE%</td>
@@ -140,7 +152,9 @@ const char SENSORS_HTML_TEMPLATE[] PROGMEM = R"=====(
 const keyProcessorEntry pageProcessors[] = {
         {"TITLE", [](const String& var){return Dashboard::instance()->title();}},
         {"HOSTNAME", [](const String& var){return Dashboard::instance()->hostname();}},
+
         {"SENSOR_1_NAME",[](const String& var){return ControllerGroup::instance()->at(0)->name();}},
+        {"SENSOR_1_ID",[](const String& var){return ControllerGroup::instance()->at(0)->id();}},
         {"SENSOR_1_STATE",[](const String& var){return ControllerGroup::instance()->at(0)->currentState();}},
         {"SENSOR_1_STATE_TOPIC",[](const String& var){return ControllerGroup::instance()->at(0)->stateTopic();}},
         {"SENSOR_1_STATE_PUBLISH_LATEST_TS",[](const String& var){return timeSinceOrNever(ControllerGroup::instance()->at(0)->stats().lastPublishedState);}},
@@ -152,6 +166,7 @@ const keyProcessorEntry pageProcessors[] = {
         {"SENSOR_1_DISCOVERY_PUBLISH_ERRS",[](const String& var){return String(ControllerGroup::instance()->at(0)->stats().discoveryErrors);}},
 
         {"SENSOR_2_NAME",[](const String& var){return ControllerGroup::instance()->at(1)->name();}},
+        {"SENSOR_2_ID",[](const String& var){return ControllerGroup::instance()->at(1)->id();}},
         {"SENSOR_2_STATE",[](const String& var){return ControllerGroup::instance()->at(1)->currentState();}},
         {"SENSOR_2_STATE_TOPIC",[](const String& var){return ControllerGroup::instance()->at(1)->stateTopic();}},
         {"SENSOR_2_STATE_PUBLISH_LATEST_TS",[](const String& var){return timeSinceOrNever(ControllerGroup::instance()->at(1)->stats().lastPublishedState);}},
@@ -163,6 +178,7 @@ const keyProcessorEntry pageProcessors[] = {
         {"SENSOR_2_DISCOVERY_PUBLISH_ERRS",[](const String& var){return String(ControllerGroup::instance()->at(1)->stats().discoveryErrors);}},
 
         {"SENSOR_3_NAME",[](const String& var){return ControllerGroup::instance()->at(2)->name();}},
+        {"SENSOR_3_ID",[](const String& var){return ControllerGroup::instance()->at(2)->id();}},
         {"SENSOR_3_STATE",[](const String& var){return ControllerGroup::instance()->at(2)->currentState();}},
         {"SENSOR_3_STATE_TOPIC",[](const String& var){return ControllerGroup::instance()->at(2)->stateTopic();}},
         {"SENSOR_3_STATE_PUBLISH_LATEST_TS",[](const String& var){return timeSinceOrNever(ControllerGroup::instance()->at(2)->stats().lastPublishedState);}},
@@ -175,14 +191,5 @@ const keyProcessorEntry pageProcessors[] = {
 };
 
 String sensorsPageTemplateProcessor(const String& var){
-String val=var+"?";
-    size_t aLen=sizeof(pageProcessors)/sizeof(pageProcessors[0]);
-    for (size_t i=0;i< aLen;i++){
-        if (var==pageProcessors[i].key){
-            String result=pageProcessors[i].processorFunc(var);
-            result.replace(String("%"),String("&percnt;"));
-            return result;
-        }
-    }
-    return val;
+    return substituteKey(var,pageProcessors,sizeof(pageProcessors) / sizeof(pageProcessors[0]));
 }

@@ -41,12 +41,12 @@ String HASensorCoupler::discoveryMessage(){
     DynamicJsonDocument jsonDoc(1024);
 
     jsonDoc["~"]= _mqttClient->dataRoot() + "/" + _hostName + "/";
-    jsonDoc["name"]= _hostName + " - " + _device->name() + " (" + _sensorName + ")";
+    jsonDoc["name"]= _device->name() + " (" + _sensorName + ")";
     jsonDoc["stat_t"]= "~sensor/" + _sensorName;
     jsonDoc["unit_of_meas"]=_unitOfMeasure;
     jsonDoc["dev_cla"]=_deviceClass;
     jsonDoc["val_tpl"]=_valueTpl;
-    jsonDoc["exp_aft"]="43200";
+    jsonDoc["exp_aft"]=43200;
     jsonDoc["frc_upd"]="False";
     jsonDoc["qos"]=0;
     jsonDoc["uniq_id"]= _hostName + "-" + _sensorName;
@@ -67,7 +67,7 @@ bool HASensorCoupler::publishDiscovery(){
     bool result=true;
     LOG_INFO("Publish discovery topic: %s",discoveryTopic().c_str())
     LOG_INFO("Publish discovery message: %s",discoveryMessage().c_str())
-    result=_mqttClient->publish(discoveryTopic(),discoveryMessage(),false);
+    result=_mqttClient->publish(discoveryTopic(),discoveryMessage(),true);
     _discoveryAttempts++;
     if (result){
         _lastPublishedDiscovery=millis();

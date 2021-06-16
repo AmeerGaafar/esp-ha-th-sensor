@@ -96,11 +96,5 @@ static const keyProcessorEntry pageProcessors[] = {
 };
 
 String utilsPageTemplateProcessor(const String& var){
-    size_t aLen=sizeof(pageProcessors)/sizeof(pageProcessors[0]);
-    for (size_t i=0;i< aLen;i++){
-        if (var==pageProcessors[i].key){
-            return pageProcessors[i].processorFunc(var);
-        }
-    }
-    return var+"?";
+    return substituteKey(var,pageProcessors,sizeof(pageProcessors) / sizeof(pageProcessors[0]));
 }

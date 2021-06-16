@@ -14,10 +14,4 @@ extern const char SENSORS_HTML_TEMPLATE[] PROGMEM;
 extern const char UTILS_HTML_TEMPLATE[] PROGMEM;
 extern const char MESSAGE_HTML_TEMPLATE[] PROGMEM;
 
-typedef struct keyProcessorEntry_Type{
-    const char* key;
-    std::function<String(const String&)> processorFunc;
-} keyProcessorEntry;
-
-
 #endif //ESP_HA_TH_SENSOR_DASHBOARD_PAGES_H

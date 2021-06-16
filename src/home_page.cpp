@@ -40,6 +40,14 @@ const char ROOT_HTML_TEMPLATE[] PROGMEM = R"=====(
       <table class="table text-center">
         <tbody>
         <tr>
+          <th scope="row" class="text-start">Product:</th>
+          <td style="text-align:right">%PRODUCT_NAME%</td>
+        </tr>
+        <tr>
+          <th scope="row" class="text-start">Model:</th>
+          <td style="text-align:right">%PRODUCT_MODEL%</td>
+        </tr>
+        <tr>
           <th scope="row" class="text-start">Host Name:</th>
           <td style="text-align:right">%HOSTNAME%</td>
         </tr>
@@ -180,6 +188,8 @@ const char ROOT_HTML_TEMPLATE[] PROGMEM = R"=====(
 
 static const keyProcessorEntry pageProcessors[] = {
         {"TITLE", [](const String& var){return Dashboard::instance()->title();}},
+        {"PRODUCT_NAME",[](const String& var){ return Dashboard::instance()->product()+" By "+Dashboard::instance()->manufacturer();}},
+        {"PRODUCT_MODEL",[](const String& var){ return Dashboard::instance()->model();}},
         {"HOSTNAME", [](const String& var){return Dashboard::instance()->hostname();}},
         {"IP_ADDRESS", [](const String& var){return MQTTClient::instance()->wifi()->localIP().toString();}},
         {"MAC_ADDRESS",[](const String& var){ return MQTTClient::instance()->wifi()->macAddress();}},
@@ -211,12 +221,5 @@ static const keyProcessorEntry pageProcessors[] = {
 };
 
 String rootPageTemplateProcessor(const String& var){
-
-    size_t aLen= sizeof(pageProcessors) / sizeof(pageProcessors[0]);
-    for (size_t i=0;i< aLen;i++){
-        if (var == pageProcessors[i].key){
-            return pageProcessors[i].processorFunc(var);
-        }
-    }
-    return var+"?";
+    return substituteKey(var,pageProcessors,sizeof(pageProcessors) / sizeof(pageProcessors[0]));
 }

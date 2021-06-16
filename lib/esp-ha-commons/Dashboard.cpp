@@ -51,9 +51,11 @@ bool RoutingTable::authenticateOf(int entryId){
 
 Dashboard * Dashboard::create(const String &title, const String &hostname, const String &httpUserName,
                               const String &httpPassword,
-                              const String &swVersion, const char *messageHtmlTemplate) {
+                              const String &swVersion, const String &product, const String &model,
+                              const String &manufacturer,
+                              const char *messageHtmlTemplate) {
     if (!dashboardSingletonInstance) {
-        dashboardSingletonInstance = new Dashboard(title, hostname, httpUserName, httpPassword, swVersion,messageHtmlTemplate);
+        dashboardSingletonInstance = new Dashboard(title, hostname, httpUserName, httpPassword, swVersion, product, model, manufacturer, messageHtmlTemplate);
         return dashboardSingletonInstance;
     }
     else {
@@ -62,13 +64,17 @@ Dashboard * Dashboard::create(const String &title, const String &hostname, const
 }
 
 Dashboard::Dashboard(const String &title, const String &hostname, const String &httpUserName,
-                     const String &httpPassword, const String &swVersion, const char *messageHtmlTemplate) {
-    _routingTable=new RoutingTable(httpUserName,httpPassword);
-    _server=new AsyncWebServer(HTTP_PORT);
-    _title=title;
-    _hostname=hostname;
-    _swVersion=swVersion;
-    _messageHtmlTemplate=messageHtmlTemplate;
+                     const String &httpPassword, const String &swVersion, const String &product, const String &model,
+                     const String &manufacturer, const char *messageHtmlTemplate) {
+    _routingTable = new RoutingTable(httpUserName, httpPassword);
+    _server = new AsyncWebServer(HTTP_PORT);
+    _title = title;
+    _hostname = hostname;
+    _swVersion = swVersion;
+    _product = product;
+    _model = model;
+    _manufacturer = manufacturer;
+    _messageHtmlTemplate = messageHtmlTemplate;
     register404Handler();
     registerRebootRoute();
     registerOTARoute();
@@ -153,3 +159,14 @@ void Dashboard::requestRouter(AsyncWebServerRequest *request){
     LOG_INFO("leaving handler func: %s",request->url().c_str())
 }
 
+String substituteKey(const String& var,const keyProcessorEntry processors[],size_t processorCount){
+
+    for (size_t i=0;i< processorCount;i++){
+        if (var == processors[i].key){
+            String result=processors[i].processorFunc(var);
+            result.replace(String("%"),String("&percnt;"));
+            return result;
+        }
+    }
+    return var+"?";
+}

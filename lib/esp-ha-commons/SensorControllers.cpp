@@ -89,9 +89,13 @@ void HAStabilizedSensorController::requestDiscovery() {
 }
 
 String HAStabilizedSensorController::name(){
-    return _hostName + "-" + _sensorName;
+    //return _hostName + "-" + _sensorName;
+    return _device->name() + " (" + _sensorName + ")";
 }
 
+String HAStabilizedSensorController::id(){
+    return _hostName + "-" + _sensorName;
+}
 SensorStats HAStabilizedSensorController::stats(){
 SensorStats stats;
     stats.name=name();

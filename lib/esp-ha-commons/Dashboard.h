@@ -44,7 +44,8 @@ public:
     static Dashboard* instance();
     static Dashboard *
     create(const String &title, const String &hostname, const String &httpUserName, const String &httpPassword,
-           const String &swVersion, const char *messageHtmlTemplate);
+           const String &swVersion, const String &product, const String &model, const String &manufacturer,
+           const char *messageHtmlTemplate);
     void registerGetHandler(const String &url, const char *htmlTemplate, const templateProcessingFunc &processor);
     void registerPostHandler(const String &url, const char *htmlTemplate, const templateProcessingFunc &processor);
     void begin();
@@ -52,24 +53,37 @@ public:
     String title(){return _title;}
     String hostname(){return _hostname;}
     String swVersion(){return _swVersion;}
+    String product(){ return _product;}
+    String model(){ return _model;}
+    String manufacturer(){ return _manufacturer;}
     void requestReboot();
     void loop() const;
     void requestRouter(AsyncWebServerRequest *request);
 
 private:
     Dashboard(const String &title, const String &hostname, const String &httpUserName,
-              const String &httpPassword, const String &swVersion, const char *messageHtmlTemplate);
+              const String &httpPassword, const String &swVersion, const String &product, const String &model, const String &manufacturer, const char *messageHtmlTemplate);
     void registerRebootRoute();
     void registerOTARoute();
     AsyncWebServer *_server;
     String _title;
     String _hostname;
     String _swVersion;
+    String _product;
+    String _model;
+    String _manufacturer;
     RoutingTable *_routingTable;
     const char *_messageHtmlTemplate;
     bool _reboot=false;
 
     void register404Handler();
 };
+
+typedef struct keyProcessorEntry_Type{
+    const char* key;
+    std::function<String(const String&)> processorFunc;
+} keyProcessorEntry;
+
+String substituteKey(const String& var,const keyProcessorEntry processors[],size_t processorCount);
 
 #endif //ESP_HA_COMMONS_DASHBOARD_H

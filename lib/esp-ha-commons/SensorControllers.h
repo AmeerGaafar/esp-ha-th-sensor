@@ -6,7 +6,8 @@
 #include <SensorStabilizer.h>
 
 const int MAX_CONTROLLER_COUNT = 16;
-typedef float (*readSensorFuncPtr)();
+typedef std::function<float(void)> readSensorFuncPtr;
+
 typedef struct Type_SensorStats {
     String name;
     uint32_t lastPublishedState=0;
@@ -28,6 +29,7 @@ class SensorController {
     virtual String discoveryTopic() = 0;
     virtual String currentState() = 0;
     virtual String name() = 0;
+    virtual String id() = 0;
     virtual SensorStats stats() = 0;
 };
 
@@ -60,6 +62,7 @@ public:
   String discoveryTopic() override;
   String currentState() override;
   String name() override;
+  String id() override;
   SensorStats stats() override;
 private:
   HASensorCoupler* sensorCoupler;
