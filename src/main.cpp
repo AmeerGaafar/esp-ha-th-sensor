@@ -13,7 +13,7 @@
 
 #include <dashboard_pages.h>
 
-const char* THIS_VERSION PROGMEM ="v1.0.15";
+const char* THIS_VERSION PROGMEM ="v1.0.17";
 const char* THIS_TITLE PROGMEM = "ESP↺HA H&T - Temperature & Humidity Sensor";
 const char* THIS_PRODUCT PROGMEM = "ESP↺HA H&T";
 const char* THIS_MANUFACTURER PROGMEM = "Ameer Gaafar";
@@ -73,7 +73,7 @@ void setupDashboard(const String &hostname) {
 }
 
 void setup(void) {
-    const String &hostnameUniqSegment = String(ESP.getChipId(), HEX);
+    const String hostnameUniqSegment = String(ESP.getChipId(), HEX);
     const String hostname= "esphaht-" + hostnameUniqSegment;
 
     #if LOG_LEVEL > 0

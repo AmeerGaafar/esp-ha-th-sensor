@@ -48,6 +48,9 @@ String HASensorCoupler::discoveryMessage(){
     jsonDoc["val_tpl"]=_valueTpl;
     jsonDoc["exp_aft"]=43200;
     jsonDoc["frc_upd"]="False";
+    jsonDoc["avty_t"]="~"+_mqttClient->lwtKeyword();
+    jsonDoc["pl_avail"]=_mqttClient->onlineKeyword();
+    jsonDoc["pl_not_avail"]=_mqttClient->offlineKeyword();
     jsonDoc["qos"]=0;
     jsonDoc["uniq_id"]= _hostName + "-" + _sensorName;
     jsonDoc["dev"]["ids"][0]= _hostName;

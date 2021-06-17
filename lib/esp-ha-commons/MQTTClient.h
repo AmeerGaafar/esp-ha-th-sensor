@@ -44,7 +44,9 @@ public:
     int wifiDisconnectCounter() const {return _wifiDisconnectCounter;}
     ESP8266WiFiClass* wifi() {return _wifi;}
     String logTopic(){return _logTopic;}
-
+    String lwtKeyword();
+    String onlineKeyword();
+    String offlineKeyword();
 private:
     MQTTClient(ESP8266WiFiClass* wifi,const String &server, int port, const String &clientId, const String &username,
                const String &password, const String &root, int qos, const String &logTopic);

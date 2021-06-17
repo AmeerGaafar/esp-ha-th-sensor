@@ -6,10 +6,10 @@
 
 static MQTTClient *mqttClientSingletonInstance = nullptr;
 
-const char OFFLINE_STRING[] = "Offline"; // cannot be PROGMEM
-const char ONLINE_STRING [] = "Online"; // // cannot be PROGMEM
+static const char OFFLINE_STRING[] = "Offline"; // cannot be PROGMEM
+static const char ONLINE_STRING [] = "Online"; // // cannot be PROGMEM
 
-const char MQTT_LWT[] PROGMEM = "status";
+static const char MQTT_LWT[] PROGMEM = "status";
 
 MQTTClient *MQTTClient::instance() { return mqttClientSingletonInstance; }
 
@@ -56,7 +56,7 @@ void MQTTClient::onConnect(bool sessionPresent) {
     LOG_INFO("client %s connected to %s...", _clientId.c_str(), _server.c_str())
     _lastConnectedTime=millis();
     _wasConnected=true;
-    publish(_lwtTopic.c_str(),ONLINE_STRING,true);
+    publish(_lwtTopic,onlineKeyword(),true);
 }
 
 void MQTTClient::onDisconnect(AsyncMqttClientDisconnectReason reason) {
@@ -92,6 +92,19 @@ void MQTTClient::onWifiDisconnected(const WiFiEventStationModeDisconnected &even
 
 String MQTTClient::dataRoot() {
     return this->_root;
+}
+
+
+String MQTTClient::lwtKeyword(){
+    return String(MQTT_LWT);
+}
+
+String MQTTClient::onlineKeyword(){
+    return String(ONLINE_STRING);
+}
+
+String MQTTClient::offlineKeyword() {
+    return String(OFFLINE_STRING);
 }
 
 bool MQTTClient::isConnected() {
