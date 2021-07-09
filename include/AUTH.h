@@ -10,7 +10,6 @@ const char* HTTPUSERNAME PROGMEM = "V8Hq7ui626F8h0t";
 const char* HTTPPASSWORD PROGMEM = "XYZ2iSF72U445WS";
 
 const char* MQTTROOT PROGMEM = "esphadevs";
-//const char* MQTTSERVER PROGMEM = "192.168.1.242"; // wrong server for testing
 const char* MQTTSERVER PROGMEM = "192.168.1.244";
 const int MQTTPORT PROGMEM = 1883;
 const char* MQTTUSERNAME PROGMEM = "mosquitto_client";
