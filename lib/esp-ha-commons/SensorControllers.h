@@ -16,6 +16,8 @@ typedef struct Type_SensorStats {
     uint32_t lastPublishedDiscovery=0;
     int discoveryAttempts=0;
     int discoveryErrors=0;
+    int acquisitionErrors;
+    uint32_t lastAcquisitionError;
 } SensorStats;
 
 class SensorController {
@@ -80,6 +82,8 @@ private:
   uint32_t _publishFrequencySecs=60;
   readSensorFuncPtr _readSensorFunc;
   bool _discoveryRequested=false;
+  int _errorCount=0;
+  uint32_t _lastErrorTS=0;
 };
 
 #endif  //ESP_HA_COMMONS_SENSOR_CONTROLLERS_H
