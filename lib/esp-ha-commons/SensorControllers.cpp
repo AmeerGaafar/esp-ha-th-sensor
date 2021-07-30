@@ -36,6 +36,8 @@ void HAStabilizedSensorController::readState() {
         _stabilizer->ingest(reading);
     }
     else {
+        _errorCount++;
+        _lastErrorTS=millis();
         LOG_ERROR("Reading %s-%s returned an error!", _hostName.c_str(), _sensorName.c_str())
     }
     _readTimer.reset();
@@ -105,6 +107,8 @@ SensorStats stats;
     stats.publishAttempts=sensorCoupler->publisAttempts();
     stats.publishErrors=sensorCoupler->publisErrors();
     stats.lastPublishedState=sensorCoupler->lastPublish();
+    stats.acquisitionErrors=this->_errorCount;
+    stats.lastAcquisitionError=this->_lastErrorTS;
     return stats;
 }
 

@@ -47,6 +47,10 @@ const char SENSORS_HTML_TEMPLATE[] PROGMEM = R"=====(
           <td style="text-align:right">%SENSOR_1_STATE%</td>
         </tr>
         <tr>
+          <th scope="row" class="text-start">Acquisition Errors:</th>
+          <td style="text-align:right">%SENSOR_1_ACQUISITION_ERRORS%<br /><i><small>(%SENSOR_1_ACQUISITION_LAST_ERROR%)</small></i></td>
+        </tr>
+        <tr>
           <th scope="row" class="text-start">State Topic:</th>
           <td style="text-align:right">%SENSOR_1_STATE_TOPIC%</td>
         </tr>
@@ -79,6 +83,10 @@ const char SENSORS_HTML_TEMPLATE[] PROGMEM = R"=====(
           <td style="text-align:right">%SENSOR_2_STATE%</td>
         </tr>
         <tr>
+          <th scope="row" class="text-start">Acquisition Errors:</th>
+          <td style="text-align:right">%SENSOR_2_ACQUISITION_ERRORS%<br /><i><small>(%SENSOR_2_ACQUISITION_LAST_ERROR%)</small></i></td>
+        </tr>
+        <tr>
           <th scope="row" class="text-start">State Topic:</th>
           <td style="text-align:right">%SENSOR_2_STATE_TOPIC%</td>
         </tr>
@@ -109,6 +117,10 @@ const char SENSORS_HTML_TEMPLATE[] PROGMEM = R"=====(
         <tr>
           <th scope="row" class="text-start">State:</th>
           <td style="text-align:right">%SENSOR_3_STATE%</td>
+        </tr>
+        <tr>
+          <th scope="row" class="text-start">Acquisition Errors:</th>
+          <td style="text-align:right">%SENSOR_3_ACQUISITION_ERRORS%<br /><i><small>(%SENSOR_3_ACQUISITION_LAST_ERROR%)</small></i></td>
         </tr>
         <tr>
           <th scope="row" class="text-start">State Topic:</th>
@@ -156,6 +168,8 @@ const keyProcessorEntry pageProcessors[] = {
         {"SENSOR_1_NAME",[](const String& var){return ControllerGroup::instance()->at(0)->name();}},
         {"SENSOR_1_ID",[](const String& var){return ControllerGroup::instance()->at(0)->id();}},
         {"SENSOR_1_STATE",[](const String& var){return ControllerGroup::instance()->at(0)->currentState();}},
+        {"SENSOR_1_ACQUISITION_ERRORS",[](const String& var){return String(ControllerGroup::instance()->at(0)->stats().acquisitionErrors);}},
+        {"SENSOR_1_ACQUISITION_LAST_ERROR",[](const String& var){return timeSinceOrNever(ControllerGroup::instance()->at(0)->stats().lastAcquisitionError);}},
         {"SENSOR_1_STATE_TOPIC",[](const String& var){return ControllerGroup::instance()->at(0)->stateTopic();}},
         {"SENSOR_1_STATE_PUBLISH_LATEST_TS",[](const String& var){return timeSinceOrNever(ControllerGroup::instance()->at(0)->stats().lastPublishedState);}},
         {"SENSOR_1_STATE_PUBLISH_COUNT",[](const String& var){return String(ControllerGroup::instance()->at(0)->stats().publishAttempts);}},
@@ -168,6 +182,8 @@ const keyProcessorEntry pageProcessors[] = {
         {"SENSOR_2_NAME",[](const String& var){return ControllerGroup::instance()->at(1)->name();}},
         {"SENSOR_2_ID",[](const String& var){return ControllerGroup::instance()->at(1)->id();}},
         {"SENSOR_2_STATE",[](const String& var){return ControllerGroup::instance()->at(1)->currentState();}},
+        {"SENSOR_2_ACQUISITION_ERRORS",[](const String& var){return String(ControllerGroup::instance()->at(1)->stats().acquisitionErrors);}},
+        {"SENSOR_2_ACQUISITION_LAST_ERROR",[](const String& var){return timeSinceOrNever(ControllerGroup::instance()->at(1)->stats().lastAcquisitionError);}},
         {"SENSOR_2_STATE_TOPIC",[](const String& var){return ControllerGroup::instance()->at(1)->stateTopic();}},
         {"SENSOR_2_STATE_PUBLISH_LATEST_TS",[](const String& var){return timeSinceOrNever(ControllerGroup::instance()->at(1)->stats().lastPublishedState);}},
         {"SENSOR_2_STATE_PUBLISH_COUNT",[](const String& var){return String(ControllerGroup::instance()->at(1)->stats().publishAttempts);}},
@@ -180,6 +196,8 @@ const keyProcessorEntry pageProcessors[] = {
         {"SENSOR_3_NAME",[](const String& var){return ControllerGroup::instance()->at(2)->name();}},
         {"SENSOR_3_ID",[](const String& var){return ControllerGroup::instance()->at(2)->id();}},
         {"SENSOR_3_STATE",[](const String& var){return ControllerGroup::instance()->at(2)->currentState();}},
+        {"SENSOR_3_ACQUISITION_ERRORS",[](const String& var){return String(ControllerGroup::instance()->at(2)->stats().acquisitionErrors);}},
+        {"SENSOR_3_ACQUISITION_LAST_ERROR",[](const String& var){return timeSinceOrNever(ControllerGroup::instance()->at(2)->stats().lastAcquisitionError);}},
         {"SENSOR_3_STATE_TOPIC",[](const String& var){return ControllerGroup::instance()->at(2)->stateTopic();}},
         {"SENSOR_3_STATE_PUBLISH_LATEST_TS",[](const String& var){return timeSinceOrNever(ControllerGroup::instance()->at(2)->stats().lastPublishedState);}},
         {"SENSOR_3_STATE_PUBLISH_COUNT",[](const String& var){return String(ControllerGroup::instance()->at(2)->stats().publishAttempts);}},

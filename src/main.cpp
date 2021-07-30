@@ -13,11 +13,11 @@
 
 #include <dashboard_pages.h>
 
-const char* THIS_VERSION PROGMEM ="v1.0.17";
+const char* THIS_VERSION PROGMEM ="v1.1.1";
 const char* THIS_TITLE PROGMEM = "ESP↺HA H&T - Temperature & Humidity Sensor";
 const char* THIS_PRODUCT PROGMEM = "ESP↺HA H&T";
 const char* THIS_MANUFACTURER PROGMEM = "Ameer Gaafar";
-const char* THIS_MODEL PROGMEM ="ESP↺HA-H&T 8266Dev-DHT22";
+const char* THIS_MODEL PROGMEM ="ESP↺HA-H&T 8266D1-DHT22";
 
 static DHT* dht22;
 
